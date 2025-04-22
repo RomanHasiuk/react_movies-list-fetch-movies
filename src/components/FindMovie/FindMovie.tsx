@@ -59,16 +59,18 @@ export const FindMovie: React.FC<Props> = ({ movies, onAdd }) => {
     }
 
     const isDuplicate = movies.some(movie => movie.imdbId === movieData.imdbId);
-    
-    if (isDuplicate) {
-      setError('This movie is already in the list');
-      return;
-    }
-
-    onAdd(movieData);
+  
+  if (isDuplicate) {
     setTitle('');
     setMovieData(null);
-    setError(null);
+    setError('This movie is already in the list');
+    return;
+  }
+
+  onAdd(movieData);
+  setTitle('');
+  setMovieData(null);
+  setError(null);
   };
 
   useEffect(() => {
