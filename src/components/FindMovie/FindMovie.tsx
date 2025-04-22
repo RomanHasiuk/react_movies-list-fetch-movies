@@ -10,7 +10,7 @@ type Props = {
   onAdd: (movie: Movie) => void;
 };
 
-export const FindMovie: React.FC<Props> = ({ onAdd }) => {
+export const FindMovie: React.FC<Props> = ({ movies, onAdd }) => {
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const [movieData, setMovieData] = useState<Movie | null>(null);
@@ -58,9 +58,17 @@ export const FindMovie: React.FC<Props> = ({ onAdd }) => {
       return;
     }
 
+    const isDuplicate = movies.some(movie => movie.imdbId === movieData.imdbId);
+    
+    if (isDuplicate) {
+      setError('This movie is already in the list');
+      return;
+    }
+
     onAdd(movieData);
     setTitle('');
     setMovieData(null);
+    setError(null);
   };
 
   useEffect(() => {
@@ -89,7 +97,6 @@ export const FindMovie: React.FC<Props> = ({ onAdd }) => {
 
           {error && (
             <p className="help is-danger" data-cy="errorMessage">
-              {/* Can&apos;t find a movie with such a title */}
               {error}
             </p>
           )}
